@@ -23,13 +23,14 @@ metadata:
     name: {{ .Values.name }}
 {{- end }}
 spec:
+  {{ $svc_type := .Values.svc.type }}
   type: {{ .Values.svc.type }}
   ports:
 {{- range .Values.svc.ports }}
   - name: {{ .name }}
     port: {{ .port }}
     protocol: {{ .protocol }}
-    {{ if eq .Values.svc.type "NodePort" }}
+    {{ if eq $svc_type "NodePort" }}
     nodePort: {{ .nodePort }}
     {{ end }}
     targetPort: {{ .targetPort }}

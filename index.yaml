@@ -3,16 +3,16 @@ entries:
   monochart:
   - apiVersion: v1
     appVersion: 0.8.2
-    created: "2021-01-20T00:28:10.587393+05:30"
+    created: "2021-01-20T00:33:08.426957+05:30"
     description: Helm monochart for configuring any kind of spin workloads
-    digest: b10f43bc256f58c611eef6d4b3b0a367fb094e17688e7924a6940103b2fd62cb
+    digest: 254af30aa08a52a02c53dec4c2935ca8f6a001ad269541f93e38dfb8f668893a
     name: monochart
     urls:
     - https://raw.githubusercontent.com/spin-org/helm-monochart/master/monochart-0.8.2.tgz
     version: 0.8.2
   - apiVersion: v1
     appVersion: 0.8.1
-    created: "2021-01-20T00:28:10.586618+05:30"
+    created: "2021-01-20T00:33:08.426227+05:30"
     description: Helm monochart for configuring any kind of spin workloads
     digest: 7c81897d445aa8d374884d4544f731866a148b36269e891724db337c43dddd99
     name: monochart
@@ -21,7 +21,7 @@ entries:
     version: 0.8.1
   - apiVersion: v1
     appVersion: 0.8.0
-    created: "2021-01-20T00:28:10.58524+05:30"
+    created: "2021-01-20T00:33:08.425513+05:30"
     description: Helm monochart for configuring any kind of spin workloads
     digest: e9c8865819d0a9d12a1e3189549a973fb782c0b41ad64c70d70dc48eea1dd231
     name: monochart
@@ -30,7 +30,7 @@ entries:
     version: 0.8.0
   - apiVersion: v1
     appVersion: 0.7.14
-    created: "2021-01-20T00:28:10.575907+05:30"
+    created: "2021-01-20T00:33:08.417652+05:30"
     description: Helm monochart for configuring any kind of spin workloads
     digest: fac7086d6c2023451ff6c285cea51b9158638737dc7aee235fd91d480209afbe
     name: monochart
@@ -39,7 +39,7 @@ entries:
     version: 0.7.14
   - apiVersion: v1
     appVersion: 0.7.13
-    created: "2021-01-20T00:28:10.574947+05:30"
+    created: "2021-01-20T00:33:08.416883+05:30"
     description: Helm monochart for configuring any kind of spin workloads
     digest: 7cd74888ad35dd5e981a0638e11356d0815a319f33ec26cbe923aec5010b4443
     name: monochart
@@ -48,7 +48,7 @@ entries:
     version: 0.7.13
   - apiVersion: v1
     appVersion: 0.7.12
-    created: "2021-01-20T00:28:10.573878+05:30"
+    created: "2021-01-20T00:33:08.416184+05:30"
     description: Helm monochart for configuring any kind of spin workloads
     digest: 4e1e238b249903e9c92844cf0b2a4157d224f78ad49e9e90df70e405a24b0934
     name: monochart
@@ -57,7 +57,7 @@ entries:
     version: 0.7.12
   - apiVersion: v1
     appVersion: 0.7.11
-    created: "2021-01-20T00:28:10.572904+05:30"
+    created: "2021-01-20T00:33:08.415464+05:30"
     description: Helm monochart for configuring any kind of spin workloads
     digest: 9b3ab05e4e9c05b060d50d030653700d7b55ffb11f7bdb057996ec4ecccbce0f
     name: monochart
@@ -66,7 +66,7 @@ entries:
     version: 0.7.11
   - apiVersion: v1
     appVersion: 0.7.8
-    created: "2021-01-20T00:28:10.583977+05:30"
+    created: "2021-01-20T00:33:08.424706+05:30"
     description: Helm monochart for configuring any kind of spin workloads
     digest: 70d596614834578af26b276c9eb96ebefe3ba537092cbf246dbc48343fdb7813
     name: monochart
@@ -75,7 +75,7 @@ entries:
     version: 0.7.8
   - apiVersion: v1
     appVersion: 0.7.7
-    created: "2021-01-20T00:28:10.581927+05:30"
+    created: "2021-01-20T00:33:08.423632+05:30"
     description: Helm monochart for configuring any kind of spin workloads
     digest: 77170e55c6e7a0e00f65a4491e1b72c32329b0a8a7834548fc92b4b353665abb
     name: monochart
@@ -84,7 +84,7 @@ entries:
     version: 0.7.7
   - apiVersion: v1
     appVersion: 0.7.6
-    created: "2021-01-20T00:28:10.580858+05:30"
+    created: "2021-01-20T00:33:08.421603+05:30"
     description: Helm monochart for configuring any kind of spin workloads
     digest: 7373477ee271bd994db0557fdbe477403e491e02efe45cce3bbc215ab5fe4c0f
     name: monochart
@@ -93,7 +93,7 @@ entries:
     version: 0.7.6
   - apiVersion: v1
     appVersion: 0.7.5
-    created: "2021-01-20T00:28:10.579815+05:30"
+    created: "2021-01-20T00:33:08.420664+05:30"
     description: Helm monochart for configuring any kind of spin workloads
     digest: 3a6fbc9df04fc08233bacda10cd2606951e12b8efc27df7f9937d5a6737709e7
     name: monochart
@@ -102,7 +102,7 @@ entries:
     version: 0.7.5
   - apiVersion: v1
     appVersion: 0.7.4
-    created: "2021-01-20T00:28:10.578783+05:30"
+    created: "2021-01-20T00:33:08.419828+05:30"
     description: Helm monochart for configuring any kind of spin workloads
     digest: f055b08569e0a04ede9cbe262af4fbb5a87977572cf6e0531649dc82ac6fbec3
     name: monochart
@@ -111,7 +111,7 @@ entries:
     version: 0.7.4
   - apiVersion: v1
     appVersion: 0.7.3
-    created: "2021-01-20T00:28:10.577859+05:30"
+    created: "2021-01-20T00:33:08.419106+05:30"
     description: Helm monochart for configuring any kind of spin workloads
     digest: 0433c7740acf105fd475fc33fdfb404090ad3b5c202411f853e8a24138e22572
     name: monochart
@@ -120,7 +120,7 @@ entries:
     version: 0.7.3
   - apiVersion: v1
     appVersion: 0.7.2
-    created: "2021-01-20T00:28:10.576884+05:30"
+    created: "2021-01-20T00:33:08.418371+05:30"
     description: Helm monochart for configuring any kind of spin workloads
     digest: 8fc14044fa1fff5d96d08df3c3de5ee750b7ba717dcd84ecdcc945728a253f1c
     name: monochart
@@ -129,7 +129,7 @@ entries:
     version: 0.7.2
   - apiVersion: v1
     appVersion: 0.7.1
-    created: "2021-01-20T00:28:10.571879+05:30"
+    created: "2021-01-20T00:33:08.414739+05:30"
     description: Helm monochart for configuring any kind of spin workloads
     digest: 26e44788affb6ed841ad2181b28cec291fa397e188e460843aa7b5b55067a3ad
     name: monochart
@@ -138,7 +138,7 @@ entries:
     version: 0.7.1
   - apiVersion: v1
     appVersion: 0.7.0
-    created: "2021-01-20T00:28:10.570881+05:30"
+    created: "2021-01-20T00:33:08.413995+05:30"
     description: Helm monochart for configuring any kind of spin workloads
     digest: 6f7b96d275e17ad45686e7a5163474be8a2113764d06612f92cb13e374e32506
     name: monochart
@@ -147,7 +147,7 @@ entries:
     version: 0.7.0
   - apiVersion: v1
     appVersion: 0.6.0
-    created: "2021-01-20T00:28:10.569975+05:30"
+    created: "2021-01-20T00:33:08.413274+05:30"
     description: Helm monochart for configuring any kind of spin workloads
     digest: 7702d581724cd93a231bad0e3c72b529c994909e0b3f0bfef4197682c6b07567
     name: monochart
@@ -156,7 +156,7 @@ entries:
     version: 0.6.0
   - apiVersion: v1
     appVersion: 0.5.2
-    created: "2021-01-20T00:28:10.568244+05:30"
+    created: "2021-01-20T00:33:08.412599+05:30"
     description: Helm monochart for configuring any kind of spin workloads
     digest: 187087bce5e8e82819d5e3df829ad2b71da12a106559b674e571150a4eaed939
     name: monochart
@@ -165,7 +165,7 @@ entries:
     version: 0.5.2
   - apiVersion: v1
     appVersion: 0.5.1
-    created: "2021-01-20T00:28:10.567206+05:30"
+    created: "2021-01-20T00:33:08.411407+05:30"
     description: Helm monochart for configuring any kind of spin workloads
     digest: 69d915c650be7859e4148c28f9e7421d44d37fe4080a953cc42dd3eff99c36dc
     name: monochart
@@ -174,7 +174,7 @@ entries:
     version: 0.5.1
   - apiVersion: v1
     appVersion: 0.5.0
-    created: "2021-01-20T00:28:10.566165+05:30"
+    created: "2021-01-20T00:33:08.409748+05:30"
     description: Helm monochart for configuring any kind of spin workloads
     digest: 3c7db8391401d5bdae5a8efe8b1090c07c4ca37f726211ac75ebc949c75ade2e
     name: monochart
@@ -183,7 +183,7 @@ entries:
     version: 0.5.0
   - apiVersion: v1
     appVersion: 0.4.0
-    created: "2021-01-20T00:28:10.565206+05:30"
+    created: "2021-01-20T00:33:08.408907+05:30"
     description: Helm monochart for configuring any kind of spin workloads
     digest: 179d067ebdecd8d42469c0470e7c5487e66b59006ae98e3d0de22f9e5c952d2f
     name: monochart
@@ -192,7 +192,7 @@ entries:
     version: 0.4.0
   - apiVersion: v1
     appVersion: 0.3.1
-    created: "2021-01-20T00:28:10.564215+05:30"
+    created: "2021-01-20T00:33:08.408087+05:30"
     description: Helm monochart for configuring any kind of spin workloads
     digest: 790f518caadad4558f488a66dfeeb554f18447a74055ac0e2eee91abc2ae5937
     name: monochart
@@ -201,7 +201,7 @@ entries:
     version: 0.3.1
   - apiVersion: v1
     appVersion: 0.3.0
-    created: "2021-01-20T00:28:10.563102+05:30"
+    created: "2021-01-20T00:33:08.407268+05:30"
     description: Helm monochart for configuring any kind of spin workloads
     digest: 18ceebb7f5d300506f3e2447c1a9200bf4e76c39f257db1fad999df3cead119c
     name: monochart
@@ -210,11 +210,11 @@ entries:
     version: 0.3.0
   - apiVersion: v1
     appVersion: "1.0"
-    created: "2021-01-20T00:28:10.562046+05:30"
+    created: "2021-01-20T00:33:08.406455+05:30"
     description: Helm monochart for configuring any kind of spin workloads
     digest: 0e092bbda1b1f00c47e609e2f2dcc4913a34fbb7cd58938447573dabbf90b89e
     name: monochart
     urls:
     - https://raw.githubusercontent.com/spin-org/helm-monochart/master/monochart-0.2.0.tgz
     version: 0.2.0
-generated: "2021-01-20T00:28:10.560051+05:30"
+generated: "2021-01-20T00:33:08.405482+05:30"
