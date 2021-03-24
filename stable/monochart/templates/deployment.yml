@@ -112,6 +112,9 @@ spec:
         - name: {{ $name | quote }}
           value: {{ $value | quote }}
 {{- end }}{{- end }}
+        {{ if .Values.pod.envFrom }}
+        envFrom: {{ toYaml .Values.pod.envFrom | nindent 8 }}
+        {{ end }}
         image: {{ .Values.pod.image_name }}:{{ .Values.pod.image_tag }}
         imagePullPolicy: {{ .Values.pod.imagePullPolicy }}
         lifecycle:
