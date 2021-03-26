@@ -32,11 +32,17 @@ spec:
 {{- range $cmd := .Values.pod.command }}
             - {{ $cmd }}
 {{- end }}
+{{- range $args := .Values.pod.args }}
+            - {{ $args }}
+{{- end }}
             env:
 {{- range $name, $value := .Values.pod.env }}{{- if not (empty $value) }}
             - name: {{ $name | quote }}
               value: {{ $value | quote }}
 {{- end }}{{- end }}
+            {{ if .Values.pod.envFrom }}
+            envFrom: {{ toYaml .Values.pod.envFrom | nindent 14 }}
+            {{ end }}
             image: {{ .Values.pod.image_name }}:{{ .Values.pod.image_tag }}
             imagePullPolicy: {{ .Values.pod.imagePullPolicy }}
             name: {{ .Values.name }}

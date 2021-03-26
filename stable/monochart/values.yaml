@@ -128,6 +128,8 @@ cronjob:
   schedule: rendered_from_helmfile
   successfulJobsHistoryLimit: 3
   suspend: false
+  pod:
+    envFrom: {}
 
 # Defaults: Secret
 secret:
