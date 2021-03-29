@@ -1,0 +1,24 @@
+{{ if .Values.namespace.create }}
+apiVersion: v1
+kind: Namespace
+metadata:
+    name: {{ .Values.namespace.app }}-{{ .Values.namespace.environment.name }}
+    labels:
+        name: {{ .Values.namespace.app }}-{{ .Values.namespace.environment.name }}
+        {{ if .Values.namespace.labels }}
+        {{- range $name, $value := .Values.namespace.labels }}
+        {{- if not (empty $value) }}
+        {{ $name }}: {{ $value }}
+        {{- end }}
+        {{- end }}
+        {{ end }}
+    annotations:
+        externalsecrets.kubernetes-client.io/permitted-key-name: {{ .Values.namespace.app }}/{{ .Values.namespace.environment.name }}/compat-secrets/*
+        {{ if .Values.namespace.annotations }}
+        {{- range $name, $value := .Values.namespace.annotations }}
+        {{- if not (empty $value) }}
+        {{ $name }}: {{ $value }}
+        {{- end }}
+        {{- end }}
+        {{ end }}
+{{ end }}

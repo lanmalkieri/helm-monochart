@@ -2,6 +2,18 @@ name: rendered_from_helmfile
 arch: rendered_from_helmfile
 port: 8080
 
+namespace:
+  create: false
+
+externalSecrets:
+  enabled: false
+  projection:
+    annotations: {}
+    labels: {}
+
+genericVolumes:
+  enabled: false
+
 # Defaults: Pod
 pod:
   # OK, so this logic is weird:

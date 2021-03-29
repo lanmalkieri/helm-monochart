@@ -145,6 +145,9 @@ spec:
 {{ toYaml .Values.pod.resources | indent 10 }}
         terminationMessagePath: /dev/termination-log
         terminationMessagePolicy: File
+        {{ if .Values.genericVolumes.enabled }}
+        volumeMounts: {{ toYaml .Values.genericVolumes.volumeMounts | nindent 10 }}
+        {{ end }}
 {{- if or (.Values.persistence.enabled) (.Values.configmap.enabled) }}
         volumeMounts:
   {{- if .Values.persistence.enabled }}
@@ -170,6 +173,9 @@ spec:
       securityContext:
 {{ toYaml .Values.pod.securityContext | indent 8 }}
       terminationGracePeriodSeconds: {{ .Values.pod.terminationGracePeriodSeconds }}
+      {{ if .Values.genericVolumes.enabled }}
+      volumes: {{ toYaml .Values.genericVolumes.volumes | nindent 8 }}
+      {{ end }}
 {{- if or (.Values.persistence.enabled) (.Values.configmap.enabled) }}
       volumes:
   {{- if .Values.persistence.enabled }}
