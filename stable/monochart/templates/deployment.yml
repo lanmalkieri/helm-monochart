@@ -63,6 +63,9 @@ spec:
         name: {{ .Values.name }}
 {{- end }}
     spec:
+    {{ if .Values.deployment.securityContext }}
+      securityContext: {{ toYaml .Values.deployment.securityContext | nindent 8 }}
+    {{ end }}
     {{ if .Values.deployment.serviceAccountName }}
       serviceAccountName: {{ .Values.deployment.serviceAccountName }}
     {{ end }}
@@ -170,8 +173,6 @@ spec:
       dnsPolicy: {{ .Values.pod.dnsPolicy }}
       restartPolicy: {{ .Values.pod.restartPolicy }}
       schedulerName: {{ .Values.pod.schedulerName }}
-      securityContext:
-{{ toYaml .Values.pod.securityContext | indent 8 }}
       terminationGracePeriodSeconds: {{ .Values.pod.terminationGracePeriodSeconds }}
       {{ if .Values.genericVolumes.enabled }}
       volumes: {{ toYaml .Values.genericVolumes.volumes | nindent 8 }}
