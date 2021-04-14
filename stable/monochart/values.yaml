@@ -112,7 +112,7 @@ hpa:
   enabled: false
   min_replicas: 1
   max_replicas: 3
-  cpu_scale_target: !!string 40
+  cpu_scale_target: "40"
 
 # Defaults: Ingress
 ing:
@@ -120,10 +120,10 @@ ing:
   public_in_prod: false
   acm_arn: rendered_from_helmfile
   external_dns: rendered_from_helmfile
-  healthcheck_interval_seconds: !!string 10
+  healthcheck_interval_seconds: "10"
   healthcheck_path: /ping
   healthcheck_port: traffic-port
-  healthcheck_timeout_seconds: !!string 2
+  healthcheck_timeout_seconds: "2"
   private_subnets: rendered_from_helmfile
   public_subnets: rendered_from_helmfile
   success_codes: 200-404
