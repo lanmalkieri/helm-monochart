@@ -1,28 +1,40 @@
 # Usage:
 # make package # Creates release binary
 # make publish  # Updates index.yaml with SHA and address of package
-# make clean  # Removes old release packages locally
 
 .PHONY = all
 
-REPO_URL=https://raw.githubusercontent.com/spin-org/helm-monochart/master
-LOCALPWD = $(shell basename "$$PWD")
+.EXPORT_ALL_VARIABLES:
+HELM_EXPERIMENTAL_OCI = 1
 
-all: package publish
+all-aws: package-aws publish-aws
+all-gcp: package-gcp publish-gcp
 
-check_vars:
-	@echo "Checking variables..." && \
-	echo LOCALPWD = ${LOCALPWD}
-
-package:
+package-aws:
 	@echo "Packaging monochart" && \
-	helm package stable/monochart -d .
+	source yq.sh && \
+	TAG=$(yq e .version stable/monochart/Chart.yaml) && \
+	helm chart save stable/monochart 780662665147.dkr.ecr.us-east-1.amazonaws.com/monochart:${TAG}
 
-publish:
-	make package
-	@echo "Updating index.yaml with generated binaries" && \
-	helm repo index . --url ${REPO_URL}
+publish-aws:
+	make package-aws
+	@echo "Pushing chart to ECR" && \
+	source yq.sh && \
+	TAG=$$(yq e .version stable/monochart/Chart.yaml) && \
+	aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin 780662665147.dkr.ecr.us-east-1.amazonaws.com && \
+	HELM_REGISTRY_CONFIG=~/.docker/config.json helm chart push 780662665147.dkr.ecr.us-east-1.amazonaws.com/monochart:$${TAG}
 
-cleanup:
-	@echo "Removing old packages locally" && \
-	find . -maxdepth 1 -type f -iname "*.tgz" ! -path . ! -wholename `ls -1tp ./*.tgz | head -1` -exec echo Removing old file {} \;  -exec rm -f {} \;
+package-gcp:
+	@echo "Packaging monochart" && \
+	source yq.sh && \
+	TAG=$(yq e .version stable/monochart/Chart.yaml) && \
+	helm chart save stable/monochart gcr.io/spin-infra/monochart:${TAG}
+
+publish-gcp:
+	make package-gcp
+	@echo "Pushing chart to GCR" && \
+	source yq.sh && \
+	TAG=$$(yq e .version stable/monochart/Chart.yaml) && \
+	echo y | gcloud auth configure-docker && \
+	gcloud auth print-access-token | docker login -u oauth2accesstoken --password-stdin https://gcr.io && \
+	HELM_REGISTRY_CONFIG=~/.docker/config.json helm chart push gcr.io/spin-infra/monochart:$${TAG}
