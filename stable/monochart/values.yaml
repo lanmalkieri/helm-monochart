@@ -4,9 +4,12 @@ port: 8080
 
 namespace:
   create: false
+  nameOverride: false
 
 externalSecrets:
   enabled: false
+  app:
+    nameOverride: false
   projection:
     annotations: {}
     labels: {}

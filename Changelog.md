@@ -1,3 +1,11 @@
+## [0.8.5] - 2021-04-26
+
+### Changed
+
+- Allow externalsecrets name to be overridden 
+- Allow namespace name to be overriden
+
+
 ## [0.8.4] - 2021-04-26
 
 ### Added
