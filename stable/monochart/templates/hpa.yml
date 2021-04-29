@@ -1,9 +1,5 @@
 {{- $enabled_hpa := .Values.hpa.enabled }}
 
-{{- if or (eq .Values.arch "ing-svc-deployment-hpa") (eq .Values.arch "istio-ing-svc-deployment-hpa") }}
-  {{- $enabled_hpa = true }}
-{{- end }}
-
 {{- if $enabled_hpa }}
 ---
 apiVersion: autoscaling/v2beta1

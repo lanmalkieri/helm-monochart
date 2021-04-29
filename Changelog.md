@@ -1,3 +1,10 @@
+## [0.8.6] - 2021-04-29
+
+### Changed
+
+- Remove old unused variables relating to Istio (Will add them back if we deploy Istio)
+- Make Ingress specifiction more generic
+
 ## [0.8.5] - 2021-04-26
 
 ### Changed

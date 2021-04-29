@@ -6,13 +6,6 @@
 {{- $lifecycle := .Values.pod.lifecycle }}
 {{- $enabled_istio := .Values.istio.enabled }}
 
-{{- if or (eq .Values.arch "ing-svc-deployment-hpa") (eq .Values.arch "istio-ing-svc-deployment-hpa") }}
-  {{- $enabled_deployment = true }}
-  {{- $enabled_istio = true }}
-  {{- $enabled_ing = true }}
-  {{- $enabled_svc = true }}
-{{- end }}
-
 {{- if eq .Values.arch "deployment" }}
   {{- $enabled_deployment = true }}
 {{- end }}

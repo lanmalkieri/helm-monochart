@@ -1,9 +1,5 @@
 {{- $enabled_svc := .Values.svc.enabled }}
 
-{{- if or (eq .Values.arch "ing-svc-deployment-hpa") (eq .Values.arch "istio-ing-svc-deployment-hpa") }}
-  {{- $enabled_svc = true }}
-{{- end }}
-
 {{- if $enabled_svc }}
 ---
 apiVersion: v1

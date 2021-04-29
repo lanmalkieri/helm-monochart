@@ -120,16 +120,7 @@ hpa:
 # Defaults: Ingress
 ing:
   enabled: false
-  public_in_prod: false
-  acm_arn: rendered_from_helmfile
-  external_dns: rendered_from_helmfile
-  healthcheck_interval_seconds: "10"
-  healthcheck_path: /ping
-  healthcheck_port: traffic-port
-  healthcheck_timeout_seconds: "2"
-  private_subnets: rendered_from_helmfile
-  public_subnets: rendered_from_helmfile
-  success_codes: 200-404
+  namespaceOverride: false
 
 # Defaults: Service
 svc:

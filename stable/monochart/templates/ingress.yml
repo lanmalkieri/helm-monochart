@@ -1,75 +1,30 @@
 {{- $enabled_ing   := .Values.ing.enabled   }}
-{{- $enabled_istio := .Values.istio.enabled }}
-
-{{- if or (eq .Values.arch "ing-svc-deployment-hpa") (eq .Values.arch "istio-ing-svc-deployment-hpa") }}
-  {{- $enabled_ing = true }}
-{{- end }}
-
-{{- if eq .Values.arch "istio-ing-svc-deployment-hpa" }}
-  {{- $enabled_istio = true }}
-{{- end }}
 
 {{- if $enabled_ing }}
 ---
-apiVersion: apps/v1
+apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   name: {{ .Values.name }}
-  {{- if $enabled_istio }}
-  namespace: istio-system
-  {{- else }}
+  {{ if .Values.ing.namespaceOverride }}
+  namespace: {{ .Values.ing.namespace }}
+  {{ else }}
   namespace: {{ .Release.Namespace }}
-  {{- end }}
+  {{ end }}
   labels:
-{{- if .Values.labels }}{{- range $name, $value := .Values.labels }}{{- if not (empty $value) }}
+    {{ if .Values.ing.labels }}
+    {{- range $name, $value := .Values.ing.labels }}
+    {{- if not (empty $value) }}
     {{ $name }}: {{ $value }}
-{{- end }}{{- end }}{{- else }}
+    {{- end }}
+    {{- end }}
+    {{ end }}
     name: {{ .Values.name }}
-{{- end }}
-  annotations:
-    kubernetes.io/ingress.class: alb
-{{- if .Values.ing.external_dns }}
-    external-dns.alpha.kubernetes.io/hostname: {{ .Values.ing.external_dns }}
-{{- end }}
-    alb.ingress.kubernetes.io/target-type: ip
-{{- if and (eq .Release.Namespace "prod") (eq .Values.ing.public_in_prod true) }}
-    alb.ingress.kubernetes.io/scheme: internet-facing
-    alb.ingress.kubernetes.io/subnets: {{ .Values.ing.public_subnets }}
-{{- else }}
-    alb.ingress.kubernetes.io/scheme: internal
-    alb.ingress.kubernetes.io/subnets: {{ .Values.ing.private_subnets }}
-{{- end }}
-    alb.ingress.kubernetes.io/listen-ports: '[{"HTTP": 80}, {"HTTPS": 443}]'
-{{- if .Values.ing.sg_ids }}
-    alb.ingress.kubernetes.io/security-groups: {{ .Values.ing.sg_ids }}
-{{- end }}
-    alb.ingress.kubernetes.io/certificate-arn: {{ .Values.ing.acm_arn }}
-    alb.ingress.kubernetes.io/ssl-policy: ELBSecurityPolicy-TLS-1-1-2017-01
-    alb.ingress.kubernetes.io/actions.ssl-redirect: '{"Type": "redirect", "RedirectConfig": { "Protocol": "HTTPS", "Port": "443", "StatusCode": "HTTP_301"}}'
-    alb.ingress.kubernetes.io/backend-protocol: HTTP
-    alb.ingress.kubernetes.io/healthcheck-port: {{ .Values.ing.healthcheck_port }}
-    alb.ingress.kubernetes.io/healthcheck-path: {{ .Values.ing.healthcheck_path }}
-    alb.ingress.kubernetes.io/healthcheck-interval-seconds: {{ .Values.ing.healthcheck_interval_seconds | quote }}
-    alb.ingress.kubernetes.io/healthcheck-timeout-seconds: {{ .Values.ing.healthcheck_timeout_seconds | quote }}
-    alb.ingress.kubernetes.io/success-codes: {{ .Values.ing.success_codes }}
-{{- if .Values.ing.waf_acl_id }}
-    alb.ingress.kubernetes.io/waf-acl-id: {{ .Values.ing.waf_acl_id }}
-{{- end }}
+  annotations: 
+    {{ if .Values.ing.annotations }}
+    {{ toYaml .Values.ing.annotations | nindent 4 }}
+    {{ end }}
 spec:
   rules:
-    - http:
-        paths:
-          - path: /*
-            backend:
-              serviceName: ssl-redirect
-              servicePort: use-annotation
-          - path: /*
-            backend:
-              {{- if $enabled_istio }}
-              serviceName: istio-ingressgateway
-              servicePort: 80
-              {{- else }}
-              serviceName: {{ .Values.name }}
-              servicePort: {{ .Values.port }}
-              {{- end }}
+    {{ toYaml .Values.ing.config | nindent 4 }}
 {{- end }}

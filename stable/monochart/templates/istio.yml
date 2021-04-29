@@ -1,9 +1,5 @@
 {{- $enabled_istio := .Values.istio.enabled }}
 
-{{- if eq .Values.arch "istio-ing-svc-deployment-hpa" }}
-  {{- $enabled_istio = true }}
-{{- end }}
-
 {{- if $enabled_istio }}
 ---
 apiVersion: networking.istio.io/v1alpha3
