@@ -1,3 +1,10 @@
+## [0.8.8] - 2021-05-05
+
+### Added
+
+- Added new Argo Rollout Resource
+- Added HPA targetting Argo Rollouts
+
 ## [0.8.6] - 2021-04-29
 
 ### Changed

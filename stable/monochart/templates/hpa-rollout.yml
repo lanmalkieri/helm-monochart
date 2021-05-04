@@ -1,0 +1,28 @@
+{{- $enabled_hpa := .Values.hpa_rollout.enabled }}
+
+{{- if $enabled_hpa }}
+---
+apiVersion: autoscaling/v2beta1
+kind: HorizontalPodAutoscaler
+metadata:
+  name: {{ .Values.name }}
+  namespace: {{ .Release.Namespace }}
+  labels:
+{{- if .Values.labels }}{{- range $name, $value := .Values.labels }}{{- if not (empty $value) }}
+    {{ $name }}: {{ $value }}
+{{- end }}{{- end }}{{- else }}
+    name: {{ .Values.name }}
+{{- end }}
+spec:
+  scaleTargetRef:
+    apiVersion: argoproj.io/v1alpha1
+    kind: Rollout
+    name: {{ .Values.name }}
+  minReplicas: {{ .Values.hpa_rollout.min_replicas }}
+  maxReplicas: {{ .Values.hpa_rollout.max_replicas }}
+  metrics:
+  - type: Resource
+    resource:
+      name: cpu
+      targetAverageUtilization: {{ .Values.hpa_rollout.cpu_scale_target }}
+{{- end }}

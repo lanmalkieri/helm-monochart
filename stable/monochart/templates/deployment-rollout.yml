@@ -1,0 +1,191 @@
+{{- $enabled_deployment_rollout := .Values.deployment_rollout.enabled }}
+{{- $enabled_ing := .Values.ing.enabled }}
+{{- $enabled_svc := .Values.svc.enabled }}
+{{- $command := .Values.pod.command }}
+{{- $initContainers := .Values.pod.initContainers }}
+{{- $lifecycle := .Values.pod.lifecycle }}
+{{- $enabled_istio := .Values.istio.enabled }}
+
+{{- if eq .Values.arch "deployment_rollout" }}
+  {{- $enabled_deployment_rollout = true }}
+{{- end }}
+
+{{- if $enabled_deployment_rollout }}
+---
+apiVersion: argoproj.io/v1alpha1
+kind: Rollout
+metadata:
+  labels:
+{{- if .Values.labels }}{{- range $name, $value := .Values.labels }}{{- if not (empty $value) }}
+    {{ $name }}: {{ $value }}
+{{- end }}{{- end }}{{- else }}
+    name: {{ .Values.name }}
+{{- end }}
+  name: {{ .Values.name }}
+  namespace: {{ .Release.Namespace }}
+spec:
+  progressDeadlineSeconds: {{ .Values.deployment_rollout.progressDeadlineSeconds }}
+  replicas: {{ .Values.deployment_rollout.replicas }}
+  revisionHistoryLimit: {{ .Values.deployment_rollout.revisionHistoryLimit }}
+  selector:
+    matchLabels:
+{{- if .Values.matchLabels }}{{- range $name, $value := .Values.matchLabels }}{{- if not (empty $value) }}
+      {{ $name }}: {{ $value }}
+{{- end }}{{- end }}{{- else }}
+      name: {{ .Values.name }}
+{{- end }}
+  strategy:
+{{ toYaml .Values.deployment_rollout.strategy | indent 4 }}
+  template:
+    metadata:
+      annotations:
+{{- if .Values.deployment_rollout.annotations }}{{- range $name, $value := .Values.deployment_rollout.annotations }}{{- if not (empty $value) }}
+        {{/*  Annottations should be quoted: https://kubernetes.io/docs/concepts/overview/working-with-objects/annotations/  */}}
+        {{ $name }}: {{ $value | quote }}
+{{- end }}{{- end }}{{- end }}
+{{- if .Values.pod.iam_role }}
+        iam.amazonaws.com/role: {{ .Values.pod.iam_role }}
+{{- end }}
+{{- if $enabled_istio }}
+        sidecar.istio.io/inject: "{{ $enabled_istio }}"
+{{- end }}
+      labels:
+{{- if .Values.deployment_rollout.labels }}{{- range $name, $value := .Values.deployment_rollout.labels }}{{- if not (empty $value) }}
+        {{ $name }}: {{ $value }}
+{{- end }}{{- end }}{{- else }}
+        name: {{ .Values.name }}
+{{- end }}
+    spec:
+    {{ if .Values.deployment_rollout.securityContext }}
+      securityContext: {{ toYaml .Values.deployment_rollout.securityContext | nindent 8 }}
+    {{ end }}
+    {{ if .Values.deployment_rollout.serviceAccountName }}
+      serviceAccountName: {{ .Values.deployment_rollout.serviceAccountName }}
+    {{ end }}
+    {{ if .Values.deployment_rollout.affinity }}
+      affinity: {{ toYaml .Values.deployment_rollout.affinity | nindent 8 }}
+    {{ end }}
+      initContainers:
+{{ toYaml $initContainers | indent 8 }}
+    {{ if .Values.deployment_rollout.tolerations }}
+      tolerations: {{ toYaml .Values.deployment_rollout.tolerations | nindent 8 }}
+    {{ end }}
+      containers:
+      - name: {{ .Values.name }}
+{{- if $command.override }}
+        command:
+{{ toYaml $command.command | indent 8 }}
+        args:
+{{ toYaml $command.args | indent 8 }}
+{{- end }}
+        env:
+        - name: POD_NAMESPACE
+          valueFrom:
+            fieldRef:
+              apiVersion: v1
+              fieldPath: metadata.namespace
+        - name: DD_ENV
+          valueFrom:
+            fieldRef:
+              apiVersion: v1
+              fieldPath: metadata.annotations['tags.datadoghq.com/env']
+        - name: DD_SERVICE
+          valueFrom:
+            fieldRef:
+              apiVersion: v1
+              fieldPath: metadata.annotations['tags.datadoghq.com/service']
+        - name: DD_VERSION
+          valueFrom:
+            fieldRef:
+              apiVersion: v1
+              fieldPath: metadata.annotations['tags.datadoghq.com/version']
+        - name: DD_AGENT_HOST
+          valueFrom:
+            fieldRef:
+              apiVersion: v1
+              fieldPath: status.hostIP
+{{- range $name, $value := .Values.pod.env }}{{- if not (empty $value) }}
+        - name: {{ $name | quote }}
+          value: {{ $value | quote }}
+{{- end }}{{- end }}
+        {{ if .Values.pod.envFrom }}
+        envFrom: {{ toYaml .Values.pod.envFrom | nindent 8 }}
+        {{ end }}
+        image: {{ .Values.pod.image_name }}:{{ .Values.pod.image_tag }}
+        imagePullPolicy: {{ .Values.pod.imagePullPolicy }}
+        lifecycle:
+{{ toYaml $lifecycle | indent 10 }}
+{{- if or (.Values.pod.enabled_port) ($enabled_ing) ($enabled_svc) }}
+        ports:
+        - containerPort: {{ .Values.port }}
+    {{- if .Values.additional_ports}}
+        {{- range $additional_port := .Values.additional_ports }}
+        - containerPort: {{ $additional_port.containerPort }}
+          protocol: {{ $additional_port.protocol }}
+        {{- end}}
+    {{- end}}
+{{- end }}
+{{- if and (not .Values.pod.readinessProbeDisabled) (or ($enabled_ing) ($enabled_svc)) }}
+        {{- with .Values.pod.readinessProbe }}
+        readinessProbe:
+          {{- . | toYaml | nindent 12 }}
+        {{- end }}
+{{- end }}
+{{- if and (not .Values.pod.livenessProbeDisabled) (or ($enabled_ing) ($enabled_svc)) }}
+        {{- with .Values.pod.livenessProbe }}
+        livenessProbe:
+          {{- . | toYaml | nindent 12 }}
+        {{- end }}
+{{- end }}
+        resources:
+{{ toYaml .Values.pod.resources | indent 10 }}
+        terminationMessagePath: /dev/termination-log
+        terminationMessagePolicy: File
+        {{ if .Values.genericVolumes.enabled }}
+        volumeMounts: {{ toYaml .Values.genericVolumes.volumeMounts | nindent 10 }}
+        {{ end }}
+{{- if or (.Values.persistence.enabled) (.Values.configmap.enabled) }}
+        volumeMounts:
+  {{- if .Values.persistence.enabled }}
+    {{- range $claim := .Values.persistence.claims }}
+        - name: {{ $claim.name }}
+          mountPath: {{ $claim.path }}
+    {{- end }}
+  {{- end }}
+  {{- if .Values.configmap.enabled }}
+    {{- range $configmap := .Values.configmap.configs }}
+        - name: {{ $configmap.name }}-configmap
+          mountPath: {{ $configmap.path }}
+    {{- end }}
+  {{- end}}
+{{- end }}
+{{- if .Values.pod.enabled_imagePullSecret }}
+      imagePullSecrets:
+        - name: {{ .Values.pod.imagePullSecret }}
+{{- end }}
+      dnsPolicy: {{ .Values.pod.dnsPolicy }}
+      restartPolicy: {{ .Values.pod.restartPolicy }}
+      schedulerName: {{ .Values.pod.schedulerName }}
+      terminationGracePeriodSeconds: {{ .Values.pod.terminationGracePeriodSeconds }}
+      {{ if .Values.genericVolumes.enabled }}
+      volumes: {{ toYaml .Values.genericVolumes.volumes | nindent 8 }}
+      {{ end }}
+{{- if or (.Values.persistence.enabled) (.Values.configmap.enabled) }}
+      volumes:
+  {{- if .Values.persistence.enabled }}
+    {{- range $claim := .Values.persistence.claims }}
+      - name: {{ $claim.name }}
+        persistentVolumeClaim:
+          claimName: {{ $claim.name }}
+    {{- end }}
+  {{- end }}
+  {{- if .Values.configmap.enabled }}
+  {{- range $configmap := .Values.configmap.configs }}
+      - name: {{ $configmap.name }}-configmap
+        configMap:
+          defaultMode: 420
+          name: {{ $configmap.name }}
+  {{- end }}
+  {{- end }}
+{{- end }}
+{{- end }}

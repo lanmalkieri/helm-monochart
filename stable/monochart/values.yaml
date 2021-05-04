@@ -90,6 +90,30 @@ deployment:
       maxUnavailable: 0%
     type: RollingUpdate
 
+# Defaults: Argo Rollout Deployment
+deployment_rollout:
+  enabled: false
+  replicas: 3
+  revisionHistoryLimit: 3
+  progressDeadlineSeconds: 600
+  spec:
+    template:
+      affinity:  {}
+      metadata:
+        annotations: {}
+  tolerations: {}  
+  strategy:
+    canary:
+      steps:
+      - setWeight: 20
+      - pause: {}
+      - setWeight: 40
+      - pause: {duration: 10}
+      - setWeight: 60
+      - pause: {duration: 10}
+      - setWeight: 80
+      - pause: {duration: 10}
+
 # Defaults: Pod disruption budget
 pdb:
   enabled: false
@@ -112,6 +136,13 @@ configmap:
 
 # Defaults: Horizontal Pod Autoscaler
 hpa:
+  enabled: false
+  min_replicas: 1
+  max_replicas: 3
+  cpu_scale_target: "40"
+
+# Defaults: Argo Rollout Horizontal Pod Autoscaler
+hpa_rollout:
   enabled: false
   min_replicas: 1
   max_replicas: 3
