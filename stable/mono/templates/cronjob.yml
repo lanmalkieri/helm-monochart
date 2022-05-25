@@ -56,3 +56,4 @@ spec:
   successfulJobsHistoryLimit: {{ .Values.cronjob.successfulJobsHistoryLimit }}
   suspend: {{ .Values.cronjob.suspend }}
 {{- end }}
+
