@@ -1,6 +1,7 @@
 {{- $enabled_cronjob := .Values.cronjob.enabled }}
 {{- $enabled_istio := .Values.istio.enabled }}
 
+
 {{- if eq .Values.arch "cronjob" }}
   {{- $enabled_cronjob = true }}
 {{- end }}
